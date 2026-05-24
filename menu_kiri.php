@@ -46,5 +46,104 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
 
+        <li style="margin-bottom: 10px;">
+            <a href="dosen.php" style="
+                text-decoration: none; 
+                display: block; 
+                padding: 8px; 
+                border-radius: 6px;
+                <?php if ($current_page == 'dosen.php') { ?>
+                    color: #ffffff; font-weight: bold; background-color: #4f46e5; border: 1px solid #3730a3;
+                <?php } else { ?>
+                    color: #64748b;
+                <?php } ?>
+            "
+            <?php if ($current_page != 'dosen.php') { ?>
+                onmouseover="this.style.backgroundColor='#e2e8f0'; this.style.color='#4f46e5';" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#64748b';"
+            <?php } ?>>
+                👨‍🏫 Data Dosen
+            </a>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+            <a href="mata_kuliah.php" style="
+                text-decoration: none; 
+                display: block; 
+                padding: 8px; 
+                border-radius: 6px;
+                <?php if ($current_page == 'mata_kuliah.php') { ?>
+                    color: #ffffff; font-weight: bold; background-color: #4f46e5; border: 1px solid #3730a3;
+                <?php } else { ?>
+                    color: #64748b;
+                <?php } ?>
+            "
+            <?php if ($current_page != 'mata_kuliah.php') { ?>
+                onmouseover="this.style.backgroundColor='#e2e8f0'; this.style.color='#4f46e5';" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#64748b';"
+            <?php } ?>>
+                📚 Mata Kuliah
+            </a>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+            <a href="nilai.php" style="
+                text-decoration: none; 
+                display: block; 
+                padding: 8px; 
+                border-radius: 6px;
+                <?php if ($current_page == 'nilai.php') { ?>
+                    color: #ffffff; font-weight: bold; background-color: #4f46e5; border: 1px solid #3730a3;
+                <?php } else { ?>
+                    color: #64748b;
+                <?php } ?>
+            "
+            <?php if ($current_page != 'nilai.php') { ?>
+                onmouseover="this.style.backgroundColor='#e2e8f0'; this.style.color='#4f46e5';" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#64748b';"
+            <?php } ?>>
+                💯 Nilai Akademik
+            </a>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+            <a href="dopem.php" style="
+                text-decoration: none; 
+                display: block; 
+                padding: 8px; 
+                border-radius: 6px;
+                <?php if ($current_page == 'dopem.php') { ?>
+                    color: #ffffff; font-weight: bold; background-color: #4f46e5; border: 1px solid #3730a3;
+                <?php } else { ?>
+                    color: #64748b;
+                <?php } ?>
+            "
+            <?php if ($current_page != 'dopem.php') { ?>
+                onmouseover="this.style.backgroundColor='#e2e8f0'; this.style.color='#4f46e5';" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#64748b';"
+            <?php } ?>>
+                👔 Dosen Pembimbing
+            </a>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+            <a href="anggota.php" style="
+                text-decoration: none; 
+                display: block; 
+                padding: 8px; 
+                border-radius: 6px;
+                <?php if ($current_page == 'anggota.php') { ?>
+                    color: #ffffff; font-weight: bold; background-color: #4f46e5; border: 1px solid #3730a3;
+                <?php } else { ?>
+                    color: #64748b;
+                <?php } ?>
+            "
+            <?php if ($current_page != 'anggota.php') { ?>
+                onmouseover="this.style.backgroundColor='#e2e8f0'; this.style.color='#4f46e5';" 
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#64748b';"
+            <?php } ?>>
+                🪪 Anggota Kelompok
+            </a>
+        </li>
     </ul>
 </td>
