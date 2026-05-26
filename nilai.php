@@ -29,7 +29,7 @@
                                 <?php
                                 include "koneksi.php"; 
 
-                                // Menggunakan INNER JOIN agar nama mahasiswa dari tbl_mhs bisa terbaca berdasarkan NIM yang sama
+                               
                                 $query = "SELECT tbl_nilai.*, tbl_mhs.namamhs 
                                           FROM tbl_nilai 
                                           INNER JOIN tbl_mhs ON tbl_nilai.nim = tbl_mhs.nim 
@@ -42,7 +42,7 @@
                                     $i++;
                                     $bg_row = ($i % 2 == 0) ? "#f8fafc" : "#ffffff";
                                     
-                                    // Menentukan warna badge status (Lulus = Hijau, Tidak Lulus / Remedial = Merah)
+                                    
                                     $status_lower = strtolower($data['status']);
                                     $is_lulus = (strpos($status_lower, 'lulus') !== false && strpos($status_lower, 'tidak') === false);
                                     $badge_bg = $is_lulus ? "#e6f4ea" : "#fce8e6";
