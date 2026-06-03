@@ -1,86 +1,132 @@
 <?php include "atas.php"; ?>
 
-    <div style="flex: 1; display: flex; align-items: stretch;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; height: 100%;">
-            <tr>
-                
-                <?php include "menu_kiri.php"; ?>
-                
-                <td width="80%" valign="top" style="padding: 30px; background-color: #ffffff;">
-                    
-                    <?php
-                    
-                    $page = isset($_GET['page']) ? $_GET['page'] : 'tampil_dosen';
+<div class="topbar">
+    <div class="topbar-left">
+        <h1>👨‍🏫 Data Dosen</h1>
+        <p>Manajemen master data dosen pembimbing</p>
+    </div>
+    <div class="topbar-right">
+        <?php
+        $page = isset($_GET['page']) ? $_GET['page'] : 'tampil_dosen';
+        if ($page === 'tampil_dosen'):
+        ?>
+        <a href="?page=tambah_dosen" class="btn-add">＋ Tambah Dosen</a>
+        <?php endif; ?>
+    </div>
+</div>
 
-                 
-                    if ($page == 'edit_dosen') {
-                        
-           
-                        include "edit_dosen.php"; 
+<?php
+if ($page == 'edit_dosen') {
+    include "edit_dosen.php";
 
-                    } elseif ($page == 'tambah_dosen') {
-                        
-                        include "tambah_dosen.php";
+} elseif ($page == 'tambah_dosen') {
+    include "tambah_dosen.php";
 
-                   } elseif ($page == 'hapus_dosen') {
-                    include "hapus_dosen.php";
-                    } else {
-                    ?>
-                        <h2 style="color: #1e293b; margin-top: 0; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Master Data Dosen Pembimbing</h2>
-                        
-                        <div style="text-align: left; margin-bottom: 20px;">
-                            <a href="?page=tambah_dosen" style="padding: 8px 14px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: bold; display: inline-block; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#3730a3'" onmouseout="this.style.backgroundColor='#4f46e5'">
-                                <i class="fas fa-plus" style="margin-right: 4px;"></i> Tambah Dosen Baru
-                            </a>
+} elseif ($page == 'hapus_dosen') {
+    include "hapus_dosen.php";
+
+} else {
+    include "koneksi.php";
+    $query  = "SELECT * FROM tbl_dosen ORDER BY nid ASC";
+    $result = mysqli_query($link, $query);
+    $total  = $result ? mysqli_num_rows($result) : 0;
+?>
+
+<!-- STATS -->
+<div class="stats-row" style="grid-template-columns: repeat(2, 1fr); max-width:480px;">
+    <div class="stat-card">
+        <div class="stat-icon green">👨‍🏫</div>
+        <div class="stat-body">
+            <h3><?= $total ?></h3>
+            <p>Total Dosen</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue">🔗</div>
+        <div class="stat-body">
+            <?php
+            $dopem_count = mysqli_query($link, "SELECT COUNT(*) as c FROM tbl_dopem");
+            $dopem_c = $dopem_count ? mysqli_fetch_assoc($dopem_count)['c'] : 0;
+            ?>
+            <h3><?= $dopem_c ?></h3>
+            <p>DOPEM Aktif</p>
+        </div>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-card">
+    <div class="table-header">
+        <div>
+            <h2>📋 Tabel Dosen</h2>
+            <div class="sub">Master data seluruh dosen pembimbing</div>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari dosen..." oninput="filterTable()">
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table id="dosenTable">
+            <thead>
+                <tr>
+                    <th class="center">NO</th>
+                    <th>NID</th>
+                    <th>Nama Dosen</th>
+                    <th class="center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($total === 0): ?>
+                <tr>
+                    <td colspan="4">
+                        <div class="empty">
+                            <div class="icon">📭</div>
+                            <h3>Belum Ada Data</h3>
+                            <p>Klik tombol "Tambah Dosen" untuk menambahkan data.</p>
                         </div>
-
-                        <div style="background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.06);">
-                            <table width="100%" cellspacing="0" cellpadding="12" style="border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr style="background-color: #f8fafc; color: #4f46e5; font-weight: bold; border-bottom: 2px solid #e2e8f0;">
-                                        <th style="width: 25%; padding: 15px 12px;">NID</th>
-                                        <th style="padding: 15px 12px;">Nama Dosen</th>
-                                        <th style="width: 20%; padding: 15px 12px; text-align: center;">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    include "koneksi.php";
-                                    $query = "SELECT * FROM tbl_dosen ORDER BY nid ASC";
-                                    $result = mysqli_query($link, $query);
-                                    $i = 0;
-
-                                    while ($row = mysqli_fetch_assoc($result)) : 
-                                        $i++;
-                                        $bg_row = ($i % 2 == 0) ? "#f8fafc" : "#ffffff";
-                                    ?>
-                                    <tr style="background-color: <?= $bg_row; ?>; border-bottom: 1px solid #e2e8f0; color: #334155;" onmouseover="this.style.backgroundColor='#f1f5f9'" onmouseout="this.style.backgroundColor='<?= $bg_row; ?>'">
-                                        <td style="padding: 12px; font-weight: bold; color: #4f46e5;"><?= $row['nid']; ?></td>
-                                        <td style="padding: 12px;"><?= $row['namados']; ?></td>
-                                        <td style="padding: 12px; text-align: center;">
-                                            <a href="?page=edit_dosen&nid=<?= $row['nid']; ?>" style="padding: 6px 12px; background-color: #eab308; color: white; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; margin-right: 5px; display: inline-block;" onmouseover="this.style.backgroundColor='#ca8a04'" onmouseout="this.style.backgroundColor='#eab308'">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <a href="?page=hapus_dosen&nid=<?= $row['nid']; ?>" style="padding: 6px 12px; background-color: #ef4444; color: white; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; display: inline-block;" onclick="return confirm('Yakin ingin menghapus data ini?')" onmouseover="this.style.backgroundColor='#dc2626'" onmouseout="this.style.backgroundColor='#ef4444'">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <?php endwhile; ?>
-                                    
-                                    <?php if (mysqli_num_rows($result) == 0) : ?>
-                                    <tr>
-                                        <td colspan="3" style="text-align: center; padding: 20px; color: #94a3b8; font-style: italic;">Belum ada data dosen pembimbing.</td>
-                                    </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                    </td>
+                </tr>
+                <?php else:
+                    $i = 0;
+                    while ($row = mysqli_fetch_assoc($result)):
+                        $i++;
+                ?>
+                <tr>
+                    <td class="td-no center"><?= $i ?></td>
+                    <td><span class="badge badge-green"><?= htmlspecialchars($row['nid']) ?></span></td>
+                    <td><span class="name-cell"><?= htmlspecialchars($row['namados']) ?></span></td>
+                    <td class="center">
+                        <div class="actions">
+                            <a href="?page=edit_dosen&nid=<?= urlencode($row['nid']) ?>"
+                               class="btn-action btn-edit" title="Edit">✏️</a>
+                            <a href="?page=hapus_dosen&nid=<?= urlencode($row['nid']) ?>"
+                               class="btn-action btn-del" title="Hapus"
+                               onclick="return confirm('Yakin ingin menghapus dosen ini?')">🗑️</a>
                         </div>
-                    <?php } ?>
-
-                </td>
-            </tr>
+                    </td>
+                </tr>
+                <?php endwhile; endif; ?>
+            </tbody>
         </table>
     </div>
+
+    <div class="table-footer">
+        <span>Menampilkan <strong><?= $total ?></strong> data dosen</span>
+        <span>Basis Data 2026 — Universitas Djuanda</span>
+    </div>
+</div>
+
+<script>
+function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('#dosenTable tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+</script>
+
+<?php } ?>
 
 <?php include "bawah.php"; ?>

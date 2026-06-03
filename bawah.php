@@ -1,6 +1,16 @@
-<div style="background-color: #f8fafc; color: #64748b; text-align: center; padding: 15px; font-size: 13px; border-top: 1px solid #e2e8f0;">
-        &copy; 2026 Universitas Djuanda. All Rights Reserved.
-    </div>
 
+</main><!-- /main -->
+
+<script>
+// Auto-dismiss alerts after 4s
+const alertEl = document.querySelector('.alert');
+if (alertEl) {
+    setTimeout(() => {
+        alertEl.style.transition = 'opacity .5s';
+        alertEl.style.opacity = '0';
+        setTimeout(() => alertEl.remove(), 500);
+    }, 4000);
+}
+</script>
 </body>
 </html>

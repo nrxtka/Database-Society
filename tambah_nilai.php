@@ -17,7 +17,7 @@ if (isset($_POST['simpan'])) {
     if (mysqli_query($link, $query)) {
         echo "<script>alert('Data nilai berhasil ditambah!'); window.location='nilai.php';</script>";
     } else {
-        echo "Gagal menyimpan data: " . mysqli_error($link);
+        echo "<div class='alert error'>❌ Gagal menyimpan data: " . mysqli_error($link) . "</div>";
     }
 }
 
@@ -26,65 +26,64 @@ $query_mhs = "SELECT nim, namamhs FROM tbl_mhs ORDER BY nim ASC";
 $result_mhs = mysqli_query($link, $query_mhs);
 ?>
 
-<div style="background-color: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #e2e8f0; max-width: 650px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); font-family: sans-serif;">
-    
-    <h2 style="color: #1e293b; margin-top: 0; margin-bottom: 25px; font-size: 20px; font-weight: bold; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
-        <i class="fas fa-plus-circle" style="color: #4f46e5; margin-right: 6px;"></i> Input Nilai Akademik Baru
-    </h2>
+<div class="form-card">
+    <div class="form-card-title">➕ Input Nilai Akademik Baru</div>
+    <div class="form-card-subtitle">Pilih mahasiswa dan isi nilai untuk kalkulasi otomatis</div>
 
     <form action="" method="POST">
-        
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; font-size: 14px; font-weight: bold; color: #475569; margin-bottom: 8px;">Pilih Mahasiswa</label>
-            <select name="nim" required style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; color: #334155; background-color: #ffffff; outline: none;" onfocus="this.style.borderColor='#4f46e5'" onblur="this.style.borderColor='#cbd5e1'">
+
+        <div class="form-section-label">👥 Pilih Mahasiswa</div>
+        <div class="form-group" style="margin-bottom:14px;">
+            <label>Mahasiswa <span style="color:var(--danger)">*</span></label>
+            <select name="nim" required>
                 <option value="">-- Pilih Mahasiswa (NIM - Nama) --</option>
-                <?php while ($mhs = mysqli_fetch_assoc($result_mhs)) : ?>
-                    <option value="<?= $mhs['nim']; ?>"><?= $mhs['nim']; ?> - <?= $mhs['namamhs']; ?></option>
+                <?php while ($mhs = mysqli_fetch_assoc($result_mhs)): ?>
+                    <option value="<?= htmlspecialchars($mhs['nim']) ?>">
+                        <?= htmlspecialchars($mhs['nim']) ?> - <?= htmlspecialchars($mhs['namamhs']) ?>
+                    </option>
                 <?php endwhile; ?>
             </select>
         </div>
 
-        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Nilai Tugas</label>
-                <input type="number" id="tugas" name="tugas" min="0" max="100" required placeholder="0-100" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px;" oninput="hitungNilai()">
+        <div class="form-section-label">📝 Input Nilai</div>
+        <div class="form-row-3">
+            <div class="form-group">
+                <label>Nilai Tugas</label>
+                <input type="number" id="tugas" name="tugas" min="0" max="100" required
+                    placeholder="0 – 100" oninput="hitungNilai()">
             </div>
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Nilai UTS</label>
-                <input type="number" id="uts" name="uts" min="0" max="100" required placeholder="0-100" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px;" oninput="hitungNilai()">
+            <div class="form-group">
+                <label>Nilai UTS</label>
+                <input type="number" id="uts" name="uts" min="0" max="100" required
+                    placeholder="0 – 100" oninput="hitungNilai()">
             </div>
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Nilai UAS</label>
-                <input type="number" id="uas" name="uas" min="0" max="100" required placeholder="0-100" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px;" oninput="hitungNilai()">
-            </div>
-        </div>
-
-        <hr style="border: 0; border-top: 1px dashed #e2e8f0; margin: 25px 0;">
-
-        <div style="display: flex; gap: 15px; margin-bottom: 30px;">
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Nilai Akhir</label>
-                <input type="text" id="akhir" name="akhir" readonly style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; background-color: #f1f5f9; color: #334155; font-weight: bold; text-align: center;">
-            </div>
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Huruf Mutu (HM)</label>
-                <input type="text" id="hm" name="hm" readonly style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; background-color: #f1f5f9; color: #4f46e5; font-weight: bold; text-align: center;">
-            </div>
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Status</label>
-                <input type="text" id="status" name="status" readonly style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 14px; background-color: #f1f5f9; font-weight: bold; text-align: center;">
+            <div class="form-group">
+                <label>Nilai UAS</label>
+                <input type="number" id="uas" name="uas" min="0" max="100" required
+                    placeholder="0 – 100" oninput="hitungNilai()">
             </div>
         </div>
 
-        <div style="display: flex; gap: 8px;">
-            <button type="submit" name="simpan" style="background-color: #22c55e; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#16a34a'" onmouseout="this.style.backgroundColor='#22c55e'">
-                <i class="fas fa-save"></i> Simpan Nilai
-            </button>
-            <a href="nilai.php" style="text-decoration: none; background-color: #64748b; color: white; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#475569'" onmouseout="this.style.backgroundColor='#64748b'">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
+        <div class="form-section-label">🏆 Hasil Kalkulasi (otomatis)</div>
+        <div class="form-row-3">
+            <div class="form-group">
+                <label>Nilai Akhir</label>
+                <input type="text" id="akhir" name="akhir" readonly placeholder="—">
+            </div>
+            <div class="form-group">
+                <label>Huruf Mutu (HM)</label>
+                <input type="text" id="hm" name="hm" readonly placeholder="—">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <input type="text" id="status" name="status" readonly placeholder="—">
+            </div>
         </div>
 
+        <div class="form-actions">
+            <button type="submit" name="simpan" class="btn btn-success">💾 Simpan Nilai</button>
+            <a href="nilai.php" class="btn btn-secondary">✕ Kembali</a>
+        </div>
     </form>
 </div>
 
@@ -107,25 +106,15 @@ function hitungNilai() {
     let statusColor = "";
 
     if (nilaiAkhir >= 80) {
-        hm = "A";
-        status = "Lulus";
-        statusColor = "#137333"; // Tulisan Hijau
+        hm = "A"; status = "Lulus";       statusColor = "#10b981";
     } else if (nilaiAkhir >= 70) {
-        hm = "B";
-        status = "Lulus";
-        statusColor = "#137333";
+        hm = "B"; status = "Lulus";       statusColor = "#10b981";
     } else if (nilaiAkhir >= 60) {
-        hm = "C";
-        status = "Lulus";
-        statusColor = "#137333";
+        hm = "C"; status = "Lulus";       statusColor = "#10b981";
     } else if (nilaiAkhir >= 50) {
-        hm = "D";
-        status = "Tidak Lulus";
-        statusColor = "#c5221f"; // Tulisan Merah
+        hm = "D"; status = "Tidak Lulus"; statusColor = "#ef4444";
     } else {
-        hm = "E";
-        status = "Tidak Lulus";
-        statusColor = "#c5221f";
+        hm = "E"; status = "Tidak Lulus"; statusColor = "#ef4444";
     }
 
     // Isikan hasil ke input field box
@@ -134,5 +123,6 @@ function hitungNilai() {
     let statusInput = document.getElementById('status');
     statusInput.value = status;
     statusInput.style.color = statusColor;
+    statusInput.style.fontWeight = '700';
 }
 </script>

@@ -1,50 +1,107 @@
 <?php include "atas.php"; ?>
 
-    <div style="flex: 1; display: flex; align-items: stretch;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; height: 100%;">
-            <tr>
-                
-                <?php include "menu_kiri.php"; ?>
-                
-                <td width="80%" valign="top" style="padding: 30px; background-color: #ffffff;">
-                    <h2 style="color: #1e293b; margin-top: 0; margin-bottom: 20px; font-size: 22px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Master Data Mahasiswa</h2>
-                    
-                    <div style="background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.06);">
-                        <table width="100%" cellspacing="0" cellpadding="12" style="border-collapse: collapse; text-align: left;">
-                            <thead>
-                                <tr style="background-color: #f8fafc; color: #4f46e5; font-weight: bold; border-bottom: 2px solid #e2e8f0;">
-                                    <th style="width: 8%; padding: 15px 12px;">No</th>
-                                    <th style="width: 25%; padding: 15px 12px;">NIM</th>
-                                    <th style="padding: 15px 12px;">Nama Mahasiswa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                include "koneksi.php"; 
+<div class="topbar">
+    <div class="topbar-left">
+        <h1>👥 Data Mahasiswa</h1>
+        <p>Master data seluruh mahasiswa terdaftar</p>
+    </div>
+    <div class="topbar-right">
+        <?php
+        include "koneksi.php";
+        $total_res = mysqli_query($link, "SELECT COUNT(*) as c FROM tbl_mhs");
+        $total = $total_res ? mysqli_fetch_assoc($total_res)['c'] : 0;
+        ?>
+        <span class="badge-count"><?= $total ?> Mahasiswa</span>
+    </div>
+</div>
 
-                                $query = "SELECT * FROM tbl_mhs";
-                                $result = mysqli_query($link, $query);
-                                $i = 0;
+<!-- STATS -->
+<div class="stats-row" style="grid-template-columns: repeat(2, 1fr); max-width:400px;">
+    <div class="stat-card">
+        <div class="stat-icon cyan">👥</div>
+        <div class="stat-body">
+            <h3><?= $total ?></h3>
+            <p>Total Mahasiswa</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon rose">💯</div>
+        <div class="stat-body">
+            <?php
+            $nil_res = mysqli_query($link, "SELECT COUNT(*) as c FROM tbl_nilai");
+            $total_nil = $nil_res ? mysqli_fetch_assoc($nil_res)['c'] : 0;
+            ?>
+            <h3><?= $total_nil ?></h3>
+            <p>Data Nilai</p>
+        </div>
+    </div>
+</div>
 
-                                while ($data = mysqli_fetch_array($result)) {
-                                    $i++;
-                                    $bg_row = ($i % 2 == 0) ? "#f8fafc" : "#ffffff";
-                                    
-                                    echo "<tr style='background-color: $bg_row; border-bottom: 1px solid #e2e8f0;' onmouseover=\"this.style.backgroundColor='#f1f5f9'\" onmouseout=\"this.style.backgroundColor='$bg_row'\">";
-                                    echo "<td style='padding: 12px; color: #64748b;'>", $i, "</td>";
-                                    echo "<td style='padding: 12px; color: #4f46e5; font-weight: bold;'>", $data["nim"], "</td>";
-                                    echo "<td style='padding: 12px; color: #334155;'>", $data["namamhs"], "</td>";
-                                    echo "</tr>";
-                                }
+<!-- TABLE -->
+<div class="table-card">
+    <div class="table-header">
+        <div>
+            <h2>📋 Tabel Mahasiswa</h2>
+            <div class="sub">Data mahasiswa yang terdaftar di sistem</div>
+        </div>
+        <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari mahasiswa..." oninput="filterTable()">
+        </div>
+    </div>
 
-                                mysqli_close($link); 
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
+    <div class="table-wrap">
+        <table id="mhsTable">
+            <thead>
+                <tr>
+                    <th class="center">NO</th>
+                    <th>NIM</th>
+                    <th>Nama Mahasiswa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $query = "SELECT * FROM tbl_mhs ORDER BY nim ASC";
+                $result = mysqli_query($link, $query);
+                $i = 0;
+
+                if ($result && mysqli_num_rows($result) > 0):
+                    while ($data = mysqli_fetch_assoc($result)):
+                        $i++;
+                ?>
+                <tr>
+                    <td class="td-no center"><?= $i ?></td>
+                    <td><span class="badge badge-blue"><?= htmlspecialchars($data['nim']) ?></span></td>
+                    <td><span class="name-cell"><?= htmlspecialchars($data['namamhs']) ?></span></td>
+                </tr>
+                <?php endwhile; else: ?>
+                <tr>
+                    <td colspan="3">
+                        <div class="empty">
+                            <div class="icon">📭</div>
+                            <h3>Belum Ada Data</h3>
+                            <p>Belum ada data mahasiswa yang terdaftar.</p>
+                        </div>
+                    </td>
+                </tr>
+                <?php endif; ?>
+            </tbody>
         </table>
     </div>
+
+    <div class="table-footer">
+        <span>Menampilkan <strong><?= $i ?></strong> data mahasiswa</span>
+        <span>Basis Data 2026 — Universitas Djuanda</span>
+    </div>
+</div>
+
+<script>
+function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    document.querySelectorAll('#mhsTable tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+</script>
 
 <?php include "bawah.php"; ?>

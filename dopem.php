@@ -200,7 +200,7 @@ $total_dos = $conn->query("SELECT COUNT(*) as c FROM tbl_dosen")->fetch_assoc()[
             position: fixed;
             top: 0;
             left: 0;
-            width: 200px;
+            width: 210px;
             height: 100vh;
             background: var(--surface);
             border-right: 1px solid var(--border);
@@ -311,7 +311,7 @@ $total_dos = $conn->query("SELECT COUNT(*) as c FROM tbl_dosen")->fetch_assoc()[
 
         /* MAIN */
         .main {
-            margin-left: 200px;
+            margin-left: 210px;
             min-height: 100vh;
             padding: 28px 32px;
             position: relative;
@@ -962,15 +962,31 @@ $total_dos = $conn->query("SELECT COUNT(*) as c FROM tbl_dosen")->fetch_assoc()[
             <p>Universitas Djuanda</p>
         </div>
         <nav class="sidebar-nav">
+            <a href="index.php" class="nav-item">
+                <span class="icon">🏠</span> Beranda
+            </a>
+            <a href="querymhs.php" class="nav-item">
+                <span class="icon">👥</span> Mahasiswa
+            </a>
+            <a href="dosen.php" class="nav-item">
+                <span class="icon">👨‍🏫</span> Dosen
+            </a>
+            <a href="mata_kuliah.php" class="nav-item">
+                <span class="icon">📚</span> Mata Kuliah
+            </a>
+            <a href="nilai.php" class="nav-item">
+                <span class="icon">💯</span> Nilai Akademik
+            </a>
             <a href="dopem.php" class="nav-item active">
-                <span class="icon">🔗</span>
-                DOPEM
+                <span class="icon">🔗</span> DOPEM
+            </a>
+            <a href="anggota.php" class="nav-item">
+                <span class="icon">🪪</span> Anggota
             </a>
         </nav>
         <div class="sidebar-footer">
-            <a href="index.php">
-                <span class="icon">🏠</span>
-                Kembali ke Home
+            <a href="logout.php">
+                <span style="font-size:15px;">🚪</span> Keluar
             </a>
         </div>
     </aside>
