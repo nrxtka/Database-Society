@@ -1,8 +1,6 @@
 <?php include "atas.php";
 
-// =============================================
-// KONFIGURASI DATABASE
-// =============================================
+
 $host   = "localhost";
 $user   = "root";
 $pass   = "";

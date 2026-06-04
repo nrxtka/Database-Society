@@ -1,11 +1,10 @@
 <?php
 include "koneksi.php";
 
-// Pastikan parameter NID ada di URL sebelum melakukan eksekusi
+
 if (isset($_GET['nid'])) {
     $nid_Target = $_GET['nid'];
     
-    // Query untuk menghapus data berdasarkan NID target
     $query = "DELETE FROM tbl_dosen WHERE nid = '$nid_Target'";
 
     if (mysqli_query($link, $query)) {
