@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
         header("Location: index.php");
         exit;
     } else {
-        $error_message = "Username atau NIM tidak ditemukan!";
+        $error_message = "Username atau NIM Salah!";
     }
 }
 ?>
@@ -30,217 +30,128 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — Sistem Informasi Akademik</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Login - Academic</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-
-        :root {
-            --bg: #f0f4ff;
-            --surface: #fff;
-            --primary: #2563eb;
-            --primary-d: #1d4ed8;
-            --primary-l: #eff6ff;
-            --danger: #ef4444;
-            --text-1: #0f172a;
-            --text-2: #475569;
-            --text-3: #94a3b8;
-            --border: #e2e8f0;
-            --shadow-md: 0 4px 24px rgba(37,99,235,.14), 0 2px 8px rgba(0,0,0,.06);
-            --shadow-lg: 0 12px 40px rgba(37,99,235,.18), 0 4px 16px rgba(0,0,0,.08);
-            --radius: 14px;
-            --radius-sm: 8px;
-            --font: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        html { scroll-behavior: smooth }
-
         body {
-            font-family: var(--font);
-            background: var(--bg);
-            min-height: 100vh;
+            font-family: sans-serif;
+            background-color: #f4f6f9; 
+            margin: 0;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(ellipse 80% 60% at 10% 10%, rgba(37,99,235,.12) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 90% 85%, rgba(6,182,212,.09) 0%, transparent 60%);
-        }
-
-        .login-wrap {
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 1;
+            justify-content: center; 
+            align-items: center;     
+            height: 100vh;           
         }
 
         .login-card {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 44px 40px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border);
+            background: #ffffff; 
+            padding: 40px 35px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+            border: 1px solid #e2e8f0; 
+            width: 450px; 
+            box-sizing: border-box;
             text-align: center;
         }
 
         .login-logo {
-            width: 120px;
-            margin-bottom: 22px;
-            filter: drop-shadow(0 6px 16px rgba(37,99,235,.22));
+            width: 140px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0px 4px 8px rgba(79, 70, 229, 0.2));
         }
 
-        .login-badge {
-            display: inline-block;
-            background: var(--primary-l);
-            color: var(--primary);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .login-card h2 {
+        .login-title {
+            color: #3b2a9f;
+            margin-top: 0;
+            margin-bottom: 25px;
             font-size: 22px;
-            font-weight: 800;
-            color: var(--text-1);
-            margin-bottom: 6px;
-            letter-spacing: -.4px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
 
-        .login-card .sub {
-            font-size: 13px;
-            color: var(--text-3);
-            margin-bottom: 28px;
-        }
-
-        .error-msg {
-            background: #fef2f2;
-            color: var(--danger);
-            border: 1px solid #fecaca;
-            border-radius: var(--radius-sm);
-            padding: 11px 16px;
-            font-size: 13px;
-            font-weight: 600;
+        .input-group {
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-align: left;
         }
-
-        .form-group {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-2);
-            letter-spacing: .05em;
-            text-transform: uppercase;
-            margin-bottom: 7px;
-        }
-
-        .form-group input {
+        
+        .input-group input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-family: var(--font);
-            color: var(--text-1);
-            background: #fafbff;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1; 
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #ffffff; 
+            color: #334155; 
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        .input-group input:focus {
+            border-color: #4f46e5; 
             outline: none;
-            transition: border-color .18s, box-shadow .18s, background .18s;
+            box-shadow: 0 0 5px rgba(79, 70, 229, 0.2);
         }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37,99,235,.12);
-            background: #fff;
-        }
-
-        .form-group input::placeholder { color: var(--text-3) }
 
         .btn-masuk {
             width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: #fff;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f46e5, #3b2a9f); 
+            color: #ffffff;
             border: none;
-            border-radius: var(--radius-sm);
+            border-radius: 6px;
             font-size: 14px;
-            font-weight: 700;
-            font-family: var(--font);
-            letter-spacing: .5px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase; 
             cursor: pointer;
-            margin-top: 8px;
-            box-shadow: 0 4px 14px rgba(37,99,235,.35);
-            transition: all .2s;
+            margin-top: 10px;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
         }
-
+        
         .btn-masuk:hover {
-            background: var(--primary-d);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(37,99,235,.45);
+            opacity: 0.9; 
+        }
+        
+        .btn-masuk:active {
+            transform: scale(0.98); 
         }
 
-        .btn-masuk:active { transform: scale(.98) }
-
-        .login-footer {
-            margin-top: 22px;
-            font-size: 12px;
-            color: var(--text-3);
+        .error-msg {
+            color: #dc2626;
+            font-size: 14px;
+            margin-bottom: 20px;
+            background-color: #fee2e2;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #fca5a5;
+            text-align: center;
         }
-
-        ::-webkit-scrollbar { width: 5px }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px }
     </style>
 </head>
 <body>
 
-<div class="login-wrap">
-    <div class="login-card">
-        <img src="unidaclear.png" alt="Logo Universitas Djuanda" class="login-logo">
-        <div class="login-badge">🎓 Basis Data 2026</div>
-        <h2>Masuk ke Sistem</h2>
-        <p class="sub">Sistem Informasi Akademik — Universitas Djuanda</p>
+<div class="login-card">
+    <img src="unidaclear.png" alt="Logo Universitas Djuanda" class="login-logo">
+    <h2 class="login-title">LOGIN</h2>
 
-        <?php if (!empty($error_message)): ?>
-            <div class="error-msg">⚠️ <?= htmlspecialchars($error_message) ?></div>
-        <?php endif; ?>
+    <?php if (!empty($error_message)) : ?>
+        <div class="error-msg"><?php echo $error_message; ?></div>
+    <?php endif; ?>
 
-        <form action="" method="POST">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" placeholder="Masukkan username" required autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label>NIM</label>
-                <input type="text" name="nim" placeholder="Masukkan NIM" required autocomplete="off">
-            </div>
-            <button type="submit" name="login" class="btn-masuk">MASUK →</button>
-        </form>
-
-        <div class="login-footer">
-            © 2026 Universitas Djuanda · Sistem Informasi Akademik
+    <form action="" method="POST">
+        <div class="input-group">
+            <input type="text" name="username" placeholder="Username" required autocomplete="off">
         </div>
-    </div>
+        
+        <div class="input-group">
+            <input type="text" name="nim" placeholder="NIM" required autocomplete="off">
+        </div>
+        
+        <button type="submit" name="login" class="btn-masuk">MASUK</button>
+    </form>
 </div>
 
 </body>
